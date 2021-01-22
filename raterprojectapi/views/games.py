@@ -10,8 +10,6 @@ from raterprojectapi.serializers import GameSerializer
 
 class GamesViewSet(ViewSet):
     def create(self, request):
-        player = Players.objects.get(user=request.auth.user)
-
         game = Games()
         game.title = request.data["title"]
         game.description = request.data["description"]
@@ -20,12 +18,10 @@ class GamesViewSet(ViewSet):
         game.total_players = request.data["total_players"]
         game.duration = request.data["duration"]
         game.age_restriction = request.data["age_restriction"]
-        game.player_id = player
-
-        gamecat = Categories.objects.get(pk=request.data["gameCatId"])
-        game.gamecat = gamecat
 
         try:
+            game.save()
+            game.categories.set(request.data["game_categories"])
             game.save()
             serializer = GameSerializer(game, context={'request': request})
             return Response(serializer.data)
@@ -44,7 +40,6 @@ class GamesViewSet(ViewSet):
             return HttpResponseServerError(ex)
 
     def update(self, request, pk=None):
-        player = Players.objects.get(user=request.auth.user)
 
         game = Games.objects.get(pk=pk)
         game.title = request.data["title"]
@@ -54,10 +49,7 @@ class GamesViewSet(ViewSet):
         game.total_players = request.data["total_players"]
         game.duration = request.data["duration"]
         game.age_restriction = request.data["age_restriction"]
-        game.player_id = player
-
-        gamecat = Categories.objects.get(pk=request.data["categoryId"])
-        game.gamecat = gamecat
+        game.categories.set(request.data["game_categories"]) 
         game.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
