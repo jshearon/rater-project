@@ -32,14 +32,14 @@ def register_user(request):
     )
 
     # Add extra info to RareUsers table
-    rareUser = Players.objects.create(
-        bio=req_body['bio'],
-        profile_image_url=req_body['profile_image_url'],
+    player = Players.objects.create(
+        name=req_body['name'],
+        age=req_body['age'],
         user=new_user
     )
 
     # Commit the user to the database by saving it
-    Players.save()
+    player.save()
 
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)
@@ -68,7 +68,6 @@ def login_user(request):
                 data = json.dumps({"valid": True, "token": token.key})
                 return HttpResponse(data, content_type='application/json')
             except:
-                print("There was a problem logging in the user")
                 data = json.dumps(
                     {"valid": False, "msg": "There was a server error when logging in the user"})
                 return HttpResponse(data, content_type='application/json')
