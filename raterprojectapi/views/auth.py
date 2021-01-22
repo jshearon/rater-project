@@ -5,6 +5,26 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from raterprojectapi.models import Players
+from rest_framework.viewsets import ViewSet
+from raterprojectapi.serializers import UsersSerializer
+from rest_framework.response import Response
+from django.http import HttpResponseServerError
+
+class PlayersViewSet(ViewSet):
+    
+    def retrieve(self, request, pk=None):
+        try:
+            player = Players.objects.get(pk=pk)
+            serializer = UsersSerializer(player, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    def list(self, request):
+        players = Players.objects.all()
+        serializer = UsersSerializer(
+            players, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
 @csrf_exempt
