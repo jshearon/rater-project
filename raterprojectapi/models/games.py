@@ -14,3 +14,7 @@ class Games(models.Model):
     on_delete=CASCADE,
     related_name="players",
     related_query_name="player")
+  gamecat = models.ManyToManyField("Categories",
+      related_name="game_categories",
+      related_query_name="game_category"
+    )
