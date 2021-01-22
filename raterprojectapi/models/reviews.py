@@ -5,12 +5,12 @@ from django.db.models.fields.related import ForeignKey
 
 class Reviews(models.Model):
     review = models.TextField()
-    player_id = models.ForeignKey("Players",
+    player = models.ForeignKey("Players",
       on_delete=CASCADE,
       related_name="reviews",
       related_query_name="review"
     )
-    game_id = models.ForeignKey("Games",
+    game = models.ForeignKey("Games",
       on_delete=CASCADE,
       related_name="reviews",
       related_query_name="review"
