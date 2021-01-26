@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from rest_framework import status
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
@@ -16,12 +17,12 @@ class RatingsViewSet(ViewSet):
         rating.player = Players.objects.get(pk=request.data["player"])
         rating.game = Games.objects.get(pk=request.data["game"])
 
-
         try:
             rating.save()
             serializer = RatingSerializer(rating, context={'request': request})
             return Response(serializer.data)
-
+        except IntegrityError:
+            return Response({"reason": "Users can only rate games once"}, status=status.HTTP_400_BAD_REQUEST)
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
