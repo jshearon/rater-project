@@ -4,8 +4,8 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields.related import ForeignKey
 
 class Ratings(models.Model):
-  class Meta:
-    unique_together = ('player', 'game')
+  # class Meta:
+  #  unique_together = ('player', 'game')
 
   rating_value = models.IntegerField()
   player = models.ForeignKey("Players",

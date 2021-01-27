@@ -38,7 +38,7 @@ class RatingsViewSet(ViewSet):
 
         rating = Ratings.objects.get(pk=pk)
         rating.player = rating.player
-        rating.game = rating.game
+        rating.game = Games.objects.get(pk=request.data["game"])
         rating.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)

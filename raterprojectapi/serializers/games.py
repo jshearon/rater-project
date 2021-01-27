@@ -5,5 +5,5 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Games
         url = serializers.HyperlinkedIdentityField(view_name='games')
-        fields = ('id', 'url', 'title', 'description', 'designer', 'year_released', 'total_players', 'duration', 'age_restriction', 'categories')
+        fields = ('id', 'url', 'title', 'description', 'designer', 'year_released', 'total_players', 'duration', 'age_restriction', 'categories', 'average_rating')
         depth = 2

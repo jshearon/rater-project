@@ -14,3 +14,22 @@ class Games(models.Model):
       related_name="game_categories",
       related_query_name="game_category"
     )
+  
+  @property
+  def average_rating(self):
+    from raterprojectapi.models import Ratings
+    """Average rating calculated attribute for each game"""
+    ratings = Ratings.objects.filter(game=self)
+
+    # Sum all of the ratings for the game
+    total_rating = 0
+    for rating in ratings:
+        total_rating += rating.rating_value
+
+    if len(ratings) is not 0:
+      return total_rating/len(ratings)
+    else:
+      return 0
+
+    # Calculate the averge and return it.
+    # If you don't know how to calculate averge, Google it.
