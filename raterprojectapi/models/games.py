@@ -26,7 +26,7 @@ class Games(models.Model):
     for rating in ratings:
         total_rating += rating.rating_value
 
-    if len(ratings) is not 0:
+    if len(ratings) != 0:
       return total_rating/len(ratings)
     else:
       return 0
